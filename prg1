@@ -34,3 +34,51 @@ plt.title(f"Histogram of {numerical_column}")
 plt.xlabel(numerical_column)
 plt.ylabel('Frequency')
 plt.show()
+
+# 4. Generate Boxplot
+plt.figure(figsize=(8, 6))
+sns.boxplot(x=df[numerical_column])
+plt.title(f"Boxplot of {numerical_column}")
+plt.xlabel(numerical_column)
+plt.show()
+# 5. Identify outliers using IQR (Interquartile Range)
+Q1 = df[numerical_column].quantile(0.25)
+Q3 = df[numerical_column].quantile(0.75)
+IQR = Q3 - Q1
+outlier_lower = Q1 - 1.5 * IQR
+outlier_upper = Q3 + 1.5 * IQR
+# Detecting outliers
+outliers = df[(df[numerical_column] < outlier_lower) | (df[numerical_column] >
+outlier_upper)]
+print("Outliers detected:")
+print(outliers)
+Outliers detected:
+Empty DataFrame
+Columns: [sepal length (cm), sepal width (cm), petal length (cm), petal width (cm), species]
+Index: []
+# 6. Select a categorical variable (example: 'species')
+categorical_column = 'species'
+# 7. Compute the frequency of each category
+category_counts = df[categorical_column].value_counts()
+print("\nCategory Frequencies:")
+print(category_counts)
+Category Frequencies:
+species
+setosa 50
+versicolor 50
+virginica 50
+Name: count, dtype: int64
+# 8. Display Bar Chart for the categorical variable
+plt.figure(figsize=(8, 6))
+category_counts.plot(kind='bar', color='skyblue')
+plt.title(f"Category Frequencies of {categorical_column}")
+plt.xlabel(categorical_column)
+plt.ylabel('Frequency')
+plt.xticks(rotation=0)
+plt.show()
+# 9. Display Pie Chart for the categorical variable
+plt.figure(figsize=(8, 6))
+category_counts.plot(kind='pie', autopct='%1.1f%%', startangle=90)
+plt.title(f"Category Distribution of {categorical_column}")
+plt.ylabel('') # Hide the ylabel
+plt.show()
