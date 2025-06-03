@@ -1,0 +1,41 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+# Step 1: Load the Iris dataset
+iris = sns.load_dataset('iris')
+# Step 2: Plot a scatter plot of two numerical variables (e.g., 'sepal_length' and 'sepal_width')
+plt.figure(figsize=(8, 6))
+sns.scatterplot(data=iris, x='sepal_length', y='sepal_width')
+plt.title('Scatter Plot: Sepal Length vs Sepal Width')
+plt.xlabel('Sepal Length')
+plt.ylabel('Sepal Width')
+plt.show()
+# Step 3: Calculate the Pearson correlation coefficient
+pearson_corr = iris[['sepal_length', 'sepal_width']].corr(method='pearson')
+print(f"Pearson Correlation Coefficient between Sepal Length and Sepal Width:
+{pearson_corr.iloc[0, 1]}")
+# Step 4: Compute the covariance and correlation matrix
+cov_matrix = iris[['sepal_length', 'sepal_width', 'petal_length', 'petal_width']].cov()
+corr_matrix = iris[['sepal_length', 'sepal_width', 'petal_length', 'petal_width']].corr()
+# Print covariance and correlation matrix
+print("\nCovariance Matrix:\n", cov_matrix)
+print("\nCorrelation Matrix:\n", corr_matrix)
+Covariance Matrix:
+sepal_length sepal_width petal_length petal_width
+sepal_length 0.685694 -0.042434 1.274315 0.516271
+sepal_width -0.042434 0.189979 -0.329656 -0.121639
+petal_length 1.274315 -0.329656 3.116278 1.295609
+petal_width 0.516271 -0.121639 1.295609 0.581006
+Correlation Matrix:
+sepal_length sepal_width petal_length petal_width
+sepal_length 1.000000 -0.117570 0.871754 0.817941
+sepal_width -0.117570 1.000000 -0.428440 -0.366126
+petal_length 0.871754 -0.428440 1.000000 0.962865
+petal_width 0.817941 -0.366126 0.962865 1.000000
+# Step 5: Visualize the correlation matrix using a heatmap
+plt.figure(figsize=(8, 6))
+sns.heatmap(corr_matrix, annot=True, cmap='PiYG', vmin=-1, vmax=1, cbar=True,
+fmt='.2f')
+plt.title('Correlation Matrix Heatmap')
+plt.show()
