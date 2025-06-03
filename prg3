@@ -1,0 +1,30 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+# Load the Iris dataset
+iris = datasets.load_iris()
+X = iris.data # Extract features (4D)
+y = iris.target # Extract target labels
+print(X)
+print(y)
+# Standardize the data (important for PCA)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+print(X_scaled)
+# Apply PCA to reduce dimensions from 4 to 2
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_scaled)
+print(X_pca)
+# Plot the transformed data
+plt.figure(figsize=(8, 6))
+for target, color in zip([0, 1, 2], ['r', 'g', 'b']):
+plt.scatter(X_pca[y == target, 0], X_pca[y == target, 1], label=iris.
+target_names[target], alpha=0.7)
+plt.xlabel('Principal Component 1')
+plt.ylabel('Principal Component 2')
+plt.title('PCA: Iris Dataset (4D to 2D)')
+plt.legend()
+plt.grid()
+plt.show()
