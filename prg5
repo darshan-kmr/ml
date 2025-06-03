@@ -1,0 +1,39 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import fetch_openml
+from numpy.linalg import inv
+# Load Boston Housing dataset
+boston = fetch_openml(name='boston', version=1, as_frame=True)
+X = boston.data['RM'].values # Selecting the 'RM' feature (average number of rooms)
+print(X)
+y = boston.target.values
+def get_weights(X, x_query, tau):
+"""Compute weights using Gaussian Kernel"""
+return np.exp(-((X - x_query) ** 2) / (2 * tau ** 2))
+def locally_weighted_regression(X, y, tau, x_queries):
+"""Perform LWR for each query point"""
+y_pred = []
+for x_query in x_queries:
+W = np.diag(get_weights(X, x_query, tau))
+print(W)
+X_bias = np.c_[np.ones(X.shape[0]), X] # Add bias term
+theta = inv(X_bias.T @ W @ X_bias) @ X_bias.T @ W @ y
+y_pred.append(np.dot([1, x_query], theta))
+return np.array(y_pred)
+# Sort X for plotting
+X_sorted = np.sort(X)
+print(X_sorted)
+y_sorted = y[np.argsort(X)]
+print(y_sorted)
+x_queries = np.linspace(X.min(), X.max(), 100)
+print(x_queries)
+tau = 0.5 # Bandwidth parameter
+y_pred = locally_weighted_regression(X, y, tau, x_queries)
+# Plot the results
+plt.scatter(X, y, label='Data points', color='blue', alpha=0.5)
+plt.plot(x_queries, y_pred, label='LWR Fit', color='red', linewidth=2)
+plt.xlabel('Average number of rooms (RM)')
+plt.ylabel('House price')
+plt.title(f'Locally Weighted Regression (tau={tau})')
+plt.legend()
+plt.show()
