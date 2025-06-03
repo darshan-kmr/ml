@@ -1,0 +1,36 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.datasets import load_iris
+# Load the Iris dataset from sklearn
+iris = load_iris()
+#By using this array in the columns parameter, you're associating each column with
+the appropriate feature name, making the DataFrame more understandable.
+df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
+print(df)
+# Add target variable (species) as a categorical column
+df['species'] = pd.Categorical.from_codes(iris.target, iris.target_names)
+print(df['species'])
+# 1. Select a numerical column (let's choose 'sepal length (cm)')
+numerical_column = 'sepal length (cm)'
+# 2. Compute mean, median, mode, standard deviation, variance, and range
+mean_value = df[numerical_column].mean()
+median_value = df[numerical_column].median()
+mode_value = df[numerical_column].mode()[0]
+std_dev = df[numerical_column].std()
+variance = df[numerical_column].var()
+data_range = df[numerical_column].max() - df[numerical_column].min()
+print(f"Mean: {mean_value}")
+print(f"Median: {median_value}")
+print(f"Mode: {mode_value}")
+print(f"Standard Deviation: {std_dev}")
+print(f"Variance: {variance}")
+print(f"Range: {data_range}")
+
+plt.figure(figsize=(10, 6))
+sns.histplot(df[numerical_column], kde=True, bins=30)
+plt.title(f"Histogram of {numerical_column}")
+plt.xlabel(numerical_column)
+plt.ylabel('Frequency')
+plt.show()
